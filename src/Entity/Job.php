@@ -42,6 +42,11 @@ class Job
      */
     private $expiresat;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="job", cascade={"persist", "remove"})
+     */
+    private $image;
+
     // /**
     //  * @ORM\Column(type="string", length=255)
     //  */
@@ -124,6 +129,18 @@ class Job
 
     //     return $this;
     // }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
 
   
 }
