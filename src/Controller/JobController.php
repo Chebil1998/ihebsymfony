@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Condidature;
 use App\Entity\Image;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,10 +54,12 @@ class JobController extends AbstractController
      * @Route("/ajouter", name="ajouter")
      */
     public function ajouter(): Response
-    {$img=new Image();
-        $img->setUrl('https://symfony.com/logos/symfony_black_03.png');
-        $img->setAlt('my logo');
-        $em=$this->getDoctrine()->getManager();
+    {
+        
+$img=new Image();
+$img->setUrl('https://symfony.com/logos/symfony_black_03.png');
+ $img->setAlt('my logo');
+ $em=$this->getDoctrine()->getManager();
 $em->persist($img);
 $em->flush();
 
@@ -69,6 +72,21 @@ $job->setExpiresat(new \DateTime());
 
 // $job->setEmail('iheb.chebil@hotmail.fr');
 $job->setImage($img);
+
+
+$condidature=new Condidature();
+        $condidature->setCondidat('yosra');
+        $condidature->setContenu('je suis un déveeloppeur senior symfony');
+        $condidature->setDate(new \DateTimeImmutable());
+        $condidature->setJob($job);
+
+        $condidature1=new Condidature();
+        $condidature1->setCondidat('iheb');
+        $condidature1->setContenu('je suis un déveeloppeur mineur symfony');
+        $condidature1->setDate(new \DateTimeImmutable());
+        $condidature1->setJob($job);
+        $em->persist($condidature);
+        $em->persist($condidature1);
 
 $em=$this->getDoctrine()->getManager();
 $em->persist($job);

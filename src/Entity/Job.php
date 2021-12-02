@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\JobRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,16 @@ class Job
      * @ORM\OneToOne(targetEntity=Image::class, inversedBy="job", cascade={"persist", "remove"})
      */
     private $image;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Condidature::class, mappedBy="job", orphanRemoval=true)
+     */
+    private $condidatures;
+
+    public function __construct()
+    {
+        $this->condidatures = new ArrayCollection();
+    }
 
     // /**
     //  * @ORM\Column(type="string", length=255)
@@ -138,6 +150,36 @@ class Job
     public function setImage(?Image $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Condidature[]
+     */
+    public function getCondidatures(): Collection
+    {
+        return $this->condidatures;
+    }
+
+    public function addCondidature(Condidature $condidature): self
+    {
+        if (!$this->condidatures->contains($condidature)) {
+            $this->condidatures[] = $condidature;
+            $condidature->setJob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCondidature(Condidature $condidature): self
+    {
+        if ($this->condidatures->removeElement($condidature)) {
+            // set the owning side to null (unless already changed)
+            if ($condidature->getJob() === $this) {
+                $condidature->setJob(null);
+            }
+        }
 
         return $this;
     }
