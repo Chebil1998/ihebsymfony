@@ -3,24 +3,7 @@
 {% block title %}AJOUTER{% endblock %}
 
 {% block body %}
-<form>
-  <fieldset >
-    <legend>Page ajout</legend>
-    <div class="mb-3">
-      <label  class="form-label">Intitulé du job</label>
-      <input type="text"  class="form-control" placeholder="saisir le nom">
-    </div>
-   <div class="input-group input-group-lg">
-      <label  class="form-label">Description</label></br>
 
-  <input type="textarea" class="form-control" aria-label="18" aria-describedby="inputGroup-sizing-lg">
-</div>
-    </div>
-   <div class="mb-3">
-      <label  class="form-label">Société</label>
-      <input type="text"  class="form-control" placeholder="saisir le nom de la société">
-    </div>
-    <button type="submit" class="btn btn-primary">AJOUTER</button>
-  </fieldset>
-</form>
+{{form(form)}}
+
 {% endblock %}

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Categorie;
 
 use App\Entity\Condidature;
 use App\Entity\Image;
@@ -8,6 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Job;
+use App\Form\JobType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
 
 class JobController extends AbstractController
 {
@@ -53,9 +61,10 @@ class JobController extends AbstractController
      /**
      * @Route("/ajouter", name="ajouter")
      */
-    public function ajouter(): Response
+    public function ajouter(Request $request)
     {
-        
+       /* $cat=new categorie();
+
 $img=new Image();
 $img->setUrl('https://symfony.com/logos/symfony_black_03.png');
  $img->setAlt('my logo');
@@ -90,11 +99,29 @@ $condidature=new Condidature();
 
 $em=$this->getDoctrine()->getManager();
 $em->persist($job);
-$em->flush();
+$em->flush();*/
+$job=new job();
+// $form=$this->createFormBuilder($job)
+// ->add('title',TextType::class)
+// ->add('company',TextType::class)
+// ->add('description',TextareaType::class)
+// ->add('isActivated',CheckboxType::class)
+// ->add('expiresAt',DateType::class)
+// // ->add('email',TextType::class)
+// ->add('save',SubmitType::class)
+// ->getForm();
+$form=$this->createForm(JobType::class,$job);
 
-
+if($request->isMethod('POST'))
+{$form->handleRequest($request);
+if($form->isValid()){
+    $entityManager=$this->getDoctrine()->getManager();
+    $entityManager->persist($job);
+    $entityManager->flush();
+}}
         return $this->render('job/ajouter.html.twig', [
             'controller_name' => 'JobController',
+            'form'=>$form->createView(),
 
             
         ]);

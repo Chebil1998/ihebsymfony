@@ -54,9 +54,15 @@ class Job
      */
     private $condidatures;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Categorie::class, mappedBy="Jobs")
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->condidatures = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     // /**
@@ -179,6 +185,33 @@ class Job
             if ($condidature->getJob() === $this) {
                 $condidature->setJob(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Categorie[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categorie $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addJob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categorie $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeJob($this);
         }
 
         return $this;
